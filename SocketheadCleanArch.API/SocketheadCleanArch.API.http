@@ -1,0 +1,6 @@
+@SocketheadCleanArch_API_HostAddress = http://localhost:5278
+
+GET {{SocketheadCleanArch_API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

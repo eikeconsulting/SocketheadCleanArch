@@ -1,0 +1,12 @@
+﻿services:
+  socketheadcleanarch.admin:
+    image: socketheadcleanarch.admin
+    build:
+      context: .
+      dockerfile: SocketheadCleanArch.Admin/Dockerfile
+
+  socketheadcleanarch.api:
+    image: socketheadcleanarch.api
+    build:
+      context: .
+      dockerfile: SocketheadCleanArch.API/Dockerfile
