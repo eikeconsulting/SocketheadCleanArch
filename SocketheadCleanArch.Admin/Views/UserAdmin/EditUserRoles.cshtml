@@ -1,0 +1,28 @@
+﻿@model EditUserRolesVM
+
+<h2>Edit Roles for @Model.UserName</h2>
+<form asp-action="EditUserRoles" method="post">
+    <input type="hidden" name="UserId" value="@Model.UserId" />
+
+    <div>
+        <label for="roles">Available Roles</label>
+        <select name="SelectedRoles" id="roles" multiple class="form-control">
+            @foreach (string? role in Model.AvailableRoles)
+            {
+                if (Model.AssignedRoles.Contains(role))
+                {
+                    <option value="@role" selected="selected")>
+                        @role
+                    </option>                
+                }
+                else
+                {
+                    <option value="@role">
+                        @role
+                    </option>                
+                }
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-success mt-2">Save Changes</button>
+</form>

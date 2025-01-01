@@ -7,11 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Entities\" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <Reference Include="Microsoft.Extensions.Identity.Core">
+        <HintPath>C:\Users\rjeik\.dotnet\shared\Microsoft.AspNetCore.App\9.0.0\Microsoft.Extensions.Identity.Core.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

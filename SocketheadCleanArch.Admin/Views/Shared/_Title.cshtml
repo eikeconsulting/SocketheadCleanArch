@@ -1,0 +1,4 @@
+﻿@if (!Convert.ToBoolean(ViewData["HideTitle"]) && ViewContext.RouteData.Values["area"] as string != "Identity")
+{
+    <h1>@ViewData["Title"]</h1>
+}
