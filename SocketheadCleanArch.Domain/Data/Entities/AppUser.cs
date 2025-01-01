@@ -6,7 +6,6 @@ namespace SocketheadCleanArch.Domain.Data.Entities;
 
 public class AppUser : IdentityUser<string>
 {
-    /*
     [StringLength(200)]
     [PersonalData]
     [Display(Name = "First Name")]
@@ -18,5 +17,4 @@ public class AppUser : IdentityUser<string>
     public string? LastName { get; set; }
 
     [NotMapped] public string FullName => $"{FirstName} {LastName}".Trim(); 
-    */
 }

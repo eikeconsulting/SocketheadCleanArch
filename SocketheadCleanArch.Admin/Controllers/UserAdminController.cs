@@ -9,8 +9,7 @@ using SocketheadCleanArch.Service.Repository;
 
 namespace SocketheadCleanArch.Admin.Controllers;
 
-// TODO - make admin
-[Authorize]
+[Authorize(Roles = "Admin" /*, Policy = "RequireMFA")*/)]
 public class UserAdminController(UserAdminRepository userAdminRepo) : Controller
 {
     public IActionResult Users()

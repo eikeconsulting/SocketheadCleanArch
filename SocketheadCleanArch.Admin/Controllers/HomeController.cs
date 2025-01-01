@@ -10,6 +10,7 @@ public class HomeController(
 {
     public IActionResult Index()
     {
+        
         return View();
     }
 

@@ -1,7 +1,5 @@
-using SocketheadCleanArch.Admin.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
-using Serilog.Events;
-using Serilog.Formatting.Compact;
 using SocketheadCleanArch.Admin;
 using SocketheadCleanArch.Admin.Data;
 using SocketheadCleanArch.Domain.Data.Entities;
@@ -10,40 +8,15 @@ using SocketheadCleanArch.Service;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration()
-
-    // Filter out health checks from logs as they are too noisy and not useful
-    .Filter.ByExcluding(logEvent =>
-        logEvent.Properties.TryGetValue("RequestPath", out var path) &&
-        path.ToString().Contains("/_health"))
-
-    .MinimumLevel.Information()
-
-    // Don't log ASP.NET Core stuff, it's too noisy
-    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-    
-    // In Development use pretty console logs, otherwise use JSON which can be picked up for analysis
-    .If(condition: Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development",
-        
-        ifAction: config => config            
-            // turn off database query logging for now
-            .MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", LogEventLevel.Warning)
-
-            // pretty print to the console
-            .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"),
-        
-        elseAction: config => config
-            // log Json to console and logs will get picked up properly by CloudWatch and Logstash
-            .WriteTo.Console(new CompactJsonFormatter())) 
-    
-    .CreateLogger();
+Log.Logger = Logging.CreateSerilogLogger(); 
 
 builder.Host.UseSerilog();
 
 builder.Services
+    .AddHealthChecks()
+    .Services
     .RegisterInfrastructure(builder.Configuration)
     .RegisterServices(builder.Configuration)
-    .AddScoped<DataSeeder>()
     .AddDatabaseDeveloperPageExceptionFilter()
     .AddDefaultIdentity<AppUser>(options =>
     {
@@ -51,17 +24,35 @@ builder.Services
         options.Password.RequiredLength = 8;
         options.Password.RequireDigit = true;
         options.Password.RequireNonAlphanumeric = true;
+        options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
     })
     .AddRoles<AppRole>()
     .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
+    .AddDefaultTokenProviders()
     .Services
-
-        
     //.AddDistributedMemoryCache() // Required for session
     //.AddSession() // Adds session services
     .AddControllersWithViews()
     //.AddSessionStateTempDataProvider()
+    .Services
+
+    .AddHsts(options => 
+    {
+        options.MaxAge = TimeSpan.FromDays(7);
+        options.IncludeSubDomains = true;
+    })
     
+    .AddAuthorization(options =>
+    {
+        options.AddPolicy("RequireMFA", policy =>
+        {
+            policy.RequireAuthenticatedUser();
+            policy.RequireClaim("amr", "mfa"); // Require the "mfa" claim
+        });
+    })
+    
+    .AddScoped<DataSeeder>()
+
     ;
 
 WebApplication app = builder.Build();
@@ -93,6 +84,8 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.MapHealthChecks("/_health");
 
 app.UseAuthorization();
 

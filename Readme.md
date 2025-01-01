@@ -1,5 +1,6 @@
-# Sockethead Clean Architecture Admin/API Template
-## Purpose
+![Sockethead logo](sockethead-logo.png)
+
+# ASP.NET MVC Clean Architecture Template
 This project template provides the foundation for an ASP.NET MVC Core project, starting with an Administrative Site and an API.
 
 ## Getting Started
@@ -58,12 +59,36 @@ important than Unit Tests.
 ## Features
 ### Database Support
 1. The Entities are defined in Domain.Data
-2. 3. The Context is defined in Infrastructure
-4. The Repo is defined in Service and is the way the Admin and API access the database 
-5. The connection is initialized to a local app.db; obviously this should be switched to a real SQL database; we prefer **Postgres**.
-6. Migrations are configured on the Infrastructure project 
+2. The Context is defined in Infrastructure
+3. The Repo is defined in Service and is the way the Admin and API access the database 
+4. The connection is initialized to a local app.db; obviously this should be switched to a real SQL database; we prefer **Postgres**.
+5. Migrations are configured on the Infrastructure project 
 
 Note: I have implemented an interface for the DbContext (in Domain.Contracts) but it is an 
 unnecessary abstraction since the Controllers inject the Repository already, which is enough abstraction.
+
+#### Create Migrations
+
+``` bash
+dotnet ef migrations add DescriptiveNameHere --context SocketheadCleanArchDbContext `
+--project ./SocketheadCleanArch.Infrastructure/SocketheadCleanArch.Infrastructure.csproj `
+--startup-project ./SocketheadCleanArch.Admin/SocketheadCleanArch.Admin.csproj
+```
+
+#### Update Database
+
+``` bash
+dotnet ef database update --context SocketheadCleanArchDbContext `
+    --project ./SocketheadCleanArch.Infrastructure/SocketheadCleanArch.Infrastructure.csproj `
+    --startup-project ./SocketheadCleanArch.Api/SocketheadCleanArch.Api.csproj
+```
+
+#### Delete Migration
+
+``` bash
+dotnet ef migrations remove --context SocketheadCleanArchDataContext `
+    --project ./SocketheadCleanArch.Infrastructure/SocketheadCleanArch.Infrastructure.csproj `
+    --startup-project ./SocketheadCleanArch.Api/SocketheadCleanArch.Api.csproj
+```
 
 

@@ -7,9 +7,15 @@
     //.AddColumnsForModel()
     //.AddColumnFor(user => user.UserName)
     .AddColumnFor(user => user.Email)
+    .AddColumnFor(user => user.FirstName)
+    .AddColumnFor(user => user.LastName)
     .AddColumnFor(user => user.EmailConfirmed)
     .AddColumnFor(user => user.TwoFactorEnabled)
     .AddButtonLinkColumn("Edit Roles", user => $"EditUserRoles?userId={user.Id}")
+    
+    .Sortable()
+    .DefaultSortBy(user => user.LastName)
+    
     .AddCustomCss()
     .AddCustomPager()
     .RenderAsync())
