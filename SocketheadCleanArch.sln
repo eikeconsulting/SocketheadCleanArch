@@ -6,6 +6,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
 		Readme.md = Readme.md
+		.gitignore = .gitignore
+		app.db = app.db
+		appsettings.json = appsettings.json
+		appsettings.Development.json = appsettings.Development.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure", "SocketheadCleanArch.Infrastructure\SocketheadCleanArch.Infrastructure.csproj", "{D0C567EF-8D52-4542-A2E1-DED553EAB0F3}"
@@ -15,6 +19,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Domain", "SocketheadCleanArch.Domain\SocketheadCleanArch.Domain.csproj", "{B276EE29-9085-43E5-89B8-C78F67F7E0FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.API", "SocketheadCleanArch.API\SocketheadCleanArch.API.csproj", "{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Tests", "SocketheadCleanArch.Tests\SocketheadCleanArch.Tests.csproj", "{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +48,9 @@ Global
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

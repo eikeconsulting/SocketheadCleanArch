@@ -1,6 +1,14 @@
-@SocketheadCleanArch_API_HostAddress = http://localhost:5278
+@SocketheadCleanArch_API_HostAddress = https://localhost:7274
 
 GET {{SocketheadCleanArch_API_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+### Login
+POST {{SocketheadCleanArch_API_HostAddress}}/Auth/login
+Content-Type: application/json
+
+{
+  "Email": "admin@bar.com",
+  "Password": "Admin@123!"
+}
+

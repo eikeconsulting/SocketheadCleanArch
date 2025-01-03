@@ -1,0 +1,10 @@
+﻿@model IReadOnlyList<SocketheadCleanArch.Domain.Entities.EFMigrationsHistory>
+
+<partial name="_DeveloperMenu" />
+
+@(await Html
+    .SimpleGrid(Model)
+    .AddColumnsForModel()
+    .AddCustomCss()
+    .RenderAsync())
+    
