@@ -4,13 +4,10 @@ using SocketheadCleanArch.Admin.Models;
 
 namespace SocketheadCleanArch.Admin.Controllers;
 
-public class HomeController(
-    //ILogger<HomeController> logger
-    ) : Controller
+public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        
         return View();
     }
 

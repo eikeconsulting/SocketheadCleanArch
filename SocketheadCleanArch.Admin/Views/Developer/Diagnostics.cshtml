@@ -1,0 +1,12 @@
+﻿@model Dictionary<string, string>
+
+<partial name="_DeveloperMenu" />
+
+@(await Html
+    .TwoColumnGrid()
+    .AddRows(Model)
+    .Css(elements =>
+    {
+        elements.Label.AddStyle("width: 200px;");
+    })
+    .RenderAsync())

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace ReaderBee.Admin.Extensions;
+namespace SocketheadCleanArch.Admin.Extensions;
 
 public static class ControllerExtensions
 {

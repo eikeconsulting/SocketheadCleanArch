@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Identity;
 using Serilog;
 using SocketheadCleanArch.Admin;
 using SocketheadCleanArch.Admin.Data;
-using SocketheadCleanArch.Domain.Data.Entities;
+using SocketheadCleanArch.Admin.MFA;
+using SocketheadCleanArch.Admin.Seeding;
+using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
 using SocketheadCleanArch.Service;
+using SocketheadCleanArch.Service.Config;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = Logging.CreateSerilogLogger(); 
+Log.Logger = new LoggerConfiguration()
+    .ApplyDefaultLoggingConfig()
+    .CreateLogger();
 
 builder.Host.UseSerilog();
+builder.BuildAppConfig(Log.Logger);
 
 builder.Services
     .AddHealthChecks()
@@ -18,6 +24,7 @@ builder.Services
     .RegisterInfrastructure(builder.Configuration)
     .RegisterServices(builder.Configuration)
     .AddDatabaseDeveloperPageExceptionFilter()
+    //.AddIdentity<AppUser, AppRole>(options =>
     .AddDefaultIdentity<AppUser>(options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
@@ -30,6 +37,10 @@ builder.Services
     .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
     .AddDefaultTokenProviders()
     .Services
+    // Setup MFA, this is not working, it never calls this
+    // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/mfa?view=aspnetcore-9.0
+    .AddScoped<IUserClaimsPrincipalFactory<AppUser>, AdditionalUserClaimsPrincipalFactory>()
+    
     //.AddDistributedMemoryCache() // Required for session
     //.AddSession() // Adds session services
     .AddControllersWithViews()
@@ -50,13 +61,12 @@ builder.Services
             policy.RequireClaim("amr", "mfa"); // Require the "mfa" claim
         });
     })
-    
+    .Configure<DataSeedSettings>(builder.Configuration.GetSection("DataSeedSettings"))
     .AddScoped<DataSeeder>()
-
+    .AddRazorPages()
     ;
 
 WebApplication app = builder.Build();
-
 
 // We are using Serilog for request logging instead of built-in middleware
 // https://github.com/serilog/serilog-aspnetcore?tab=readme-ov-file
@@ -69,7 +79,6 @@ app.UseSerilogRequestLogging(options =>
     };
 });
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -77,10 +86,12 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseExceptionHandler("/Home/Error");
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHttpsRedirection();
 app.UseRouting();

@@ -12,7 +12,7 @@ namespace SocketheadCleanArch.Admin.Data.Migrations
 {
     [DbContext(typeof(SocketheadCleanArchDbContext))]
     [Migration("20250101014019_AppUser")]
-    partial class AppUser
+    partial class AppUser1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

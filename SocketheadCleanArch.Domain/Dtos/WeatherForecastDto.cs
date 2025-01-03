@@ -1,6 +1,6 @@
-namespace SocketheadCleanArch.API;
+namespace SocketheadCleanArch.Domain.Dtos;
 
-public class WeatherForecast
+public class WeatherForecastDto
 {
     public DateOnly Date { get; set; }
 

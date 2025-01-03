@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SocketheadCleanArch.Domain.Contracts;
-using SocketheadCleanArch.Domain.Data.Entities;
+using SocketheadCleanArch.Domain.Entities;
 
 namespace SocketheadCleanArch.Admin.Data;
 

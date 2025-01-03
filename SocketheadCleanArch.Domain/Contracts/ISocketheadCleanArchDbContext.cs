@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SocketheadCleanArch.Domain.Data.Entities;
+using SocketheadCleanArch.Domain.Entities;
 
 namespace SocketheadCleanArch.Domain.Contracts;
 

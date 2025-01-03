@@ -7,6 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		compose.yaml = compose.yaml
 		Readme.md = Readme.md
 		.gitignore = .gitignore
+		app.db = app.db
+		appsettings.json = appsettings.json
+		appsettings.Development.json = appsettings.Development.json
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure", "SocketheadCleanArch.Infrastructure\SocketheadCleanArch.Infrastructure.csproj", "{D0C567EF-8D52-4542-A2E1-DED553EAB0F3}"
@@ -17,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.API", "SocketheadCleanArch.API\SocketheadCleanArch.API.csproj", "{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Tests", "SocketheadCleanArch.Tests\SocketheadCleanArch.Tests.csproj", "{5519BB0E-758A-4710-B5FC-EAFF18CFD798}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Tests", "SocketheadCleanArch.Tests\SocketheadCleanArch.Tests.csproj", "{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,9 +48,9 @@ Global
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5519BB0E-758A-4710-B5FC-EAFF18CFD798}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5519BB0E-758A-4710-B5FC-EAFF18CFD798}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5519BB0E-758A-4710-B5FC-EAFF18CFD798}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5519BB0E-758A-4710-B5FC-EAFF18CFD798}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

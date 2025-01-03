@@ -1,6 +1,4 @@
-﻿@using Sockethead.Razor.Grid
-@using SocketheadCleanArch.Admin.Extensions
-@model IQueryable<SocketheadCleanArch.Domain.Data.Entities.AppUser>
+﻿@model IQueryable<AppUser>
 
 @(await Html
     .SimpleGrid(Model)

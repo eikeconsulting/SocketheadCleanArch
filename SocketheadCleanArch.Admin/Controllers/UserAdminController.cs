@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ReaderBee.Admin.Extensions;
 using Sockethead.Razor.Alert.Extensions;
+using SocketheadCleanArch.Admin.Extensions;
 using SocketheadCleanArch.Admin.Models;
-using SocketheadCleanArch.Domain.Data.Entities;
+using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Service.Repository;
 
 namespace SocketheadCleanArch.Admin.Controllers;

@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SocketheadCleanArch.Admin.Data;
+using SocketheadCleanArch.Domain.Contracts;
 
 namespace SocketheadCleanArch.Infrastructure;
 
@@ -18,6 +19,7 @@ public static class DependencyInjection
                 options.UseSqlite(connectionString); // Change this for your project!
                 options.EnableDetailedErrors();
             })
+            .AddScoped<ISocketheadCleanArchDbContext, SocketheadCleanArchDbContext>()
             ;
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace SocketheadCleanArch.Domain.Data.Entities;
+﻿namespace SocketheadCleanArch.Domain.Entities;
 
 public class EFMigrationsHistory
 {

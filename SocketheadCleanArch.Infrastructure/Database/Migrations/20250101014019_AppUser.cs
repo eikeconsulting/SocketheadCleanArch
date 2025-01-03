@@ -5,7 +5,7 @@
 namespace SocketheadCleanArch.Admin.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AppUser : Migration
+    public partial class AppUser1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

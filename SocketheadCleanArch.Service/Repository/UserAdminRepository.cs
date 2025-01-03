@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SocketheadCleanArch.Domain.Data.Entities;
+using SocketheadCleanArch.Domain.Entities;
 
 namespace SocketheadCleanArch.Service.Repository;
 
@@ -14,6 +14,11 @@ public class UserAdminRepository(
     {
         return await userManager.FindByIdAsync(userId);
     }
+
+    public async Task<AppUser?> FindUserByEmailAsync(string email)
+    {
+        return await userManager.FindByEmailAsync(email);
+    }
     
     public async Task<IReadOnlyList<string>> GetUserRolesAsync(AppUser user)
     {
@@ -23,6 +28,11 @@ public class UserAdminRepository(
     public async Task<IdentityResult> CreateRoleAsync(string roleName)
     {
         return await roleManager.CreateAsync(new AppRole(roleName));
+    }
+
+    public async Task<bool> AuthenticateUserAsync(AppUser user, string password)
+    {
+        return await userManager.CheckPasswordAsync(user, password);
     }
     
     public async Task SetRolesAsync(AppUser user, IReadOnlyList<string> roles)
