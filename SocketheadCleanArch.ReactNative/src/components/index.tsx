@@ -1,7 +1,7 @@
-import Text from './text'
-import Button from './button'
-import Loader from './loader'
-import Image from './image'
+import Text from '@app/components/text';
+import Button from '@app/components/button';
+import Loader from '@app/components/loader';
+import Image from '@app/components/image';
 
 export {
     Text,

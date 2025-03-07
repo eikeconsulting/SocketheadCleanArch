@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import FastImage from 'react-native-fast-image'
-import { Assets } from '../../assets'
+import React, { useEffect, useState } from 'react';
+import FastImage from 'react-native-fast-image';
+import { Assets } from '@app/assets';
 
 const Image = ({ source, headers = {}, style = {}, resizeMode = FastImage.resizeMode.cover }: ImageProps) => {
 
@@ -44,11 +44,10 @@ const Image = ({ source, headers = {}, style = {}, resizeMode = FastImage.resize
                 resizeMode={resizeMode}
             />
         </>
-    )
+    );
 }
 
-export default Image
-
+export default Image;
 
 interface ImageSource {
     uri?: string;

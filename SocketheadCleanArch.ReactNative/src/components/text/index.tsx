@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text as RNText } from 'react-native';
-import { fontFamily as ff } from '../../constants'
-import Colors from '../../colors';
+import { fontFamily as ff } from '@app/constants';
+import Colors from '@app/colors';
 
 const Text = ({ children, style = {}, numberOfLines = 0, onPress }: TextProps) => {
 
@@ -30,11 +30,6 @@ export default Text;
 
 interface TextProps {
     children: any,
-    // style: {
-    //     color: string,
-    //     fontFamily: string,
-    //     rest: any
-    // },
     style: any,
     numberOfLines: number,
     onPress: Function,

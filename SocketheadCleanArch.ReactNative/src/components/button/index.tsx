@@ -1,8 +1,8 @@
-import { TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import Text from '../text'
-import Colors from '../../colors'
-import Loader from '../loader'
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import Text from '@app/components/text';
+import Loader from '@app/components/loader';
+import Colors from '@app/colors';
 
 const Button = ({ label = 'Default Label', onPress = () => { }, disabled = false, containerStyles = {}, textStyles = {}, loading = false }: ButtonProps) => {
     if (loading) {
@@ -10,17 +10,20 @@ const Button = ({ label = 'Default Label', onPress = () => { }, disabled = false
             <View style={{ borderRadius: 12, paddingVertical: 20, ...containerStyles }}>
                 <Loader animating />
             </View>
-        )
-    } else {
-        return (
-            <TouchableOpacity disabled={disabled} onPress={() => onPress()} style={{ backgroundColor: disabled ? Colors.blueGrey : Colors.primaryColor, borderRadius: 12, paddingVertical: 20, ...containerStyles }}>
-                <Text numberOfLines={0} onPress={() => null} style={{ color: Colors.white, textAlign: 'center', fontSize: 14, ...textStyles }}>{label}</Text>
-            </TouchableOpacity>
-        )
+        );
     }
+    return (
+        <TouchableOpacity disabled={disabled} onPress={() => onPress()} style={{ backgroundColor: disabled ? Colors.blueGrey : Colors.primaryColor, borderRadius: 12, paddingVertical: 20, ...containerStyles }}>
+            <Text numberOfLines={0} onPress={() => null} style={{ color: Colors.white, textAlign: 'center', fontSize: 14, ...textStyles }}>{label}</Text>
+        </TouchableOpacity>
+    );
 }
 
-export default Button
+export default Button;
+
+const style = StyleSheet.create({
+
+})
 
 interface ButtonProps {
     label: string,
@@ -29,4 +32,4 @@ interface ButtonProps {
     containerStyles: object
     textStyles: object,
     loading: boolean
-}
+};
