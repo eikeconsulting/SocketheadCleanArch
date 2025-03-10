@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import FastImage from 'react-native-fast-image';
 import { Assets } from '@app/assets';
 
-const Image = ({ source, headers = {}, style = {}, resizeMode = FastImage.resizeMode.cover }: ImageProps) => {
+const Image = ({ source, headers = {}, style = {}, resizeMode = FastImage.resizeMode.cover, tintColor = '' }: ImageProps) => {
 
     const [isLoading, setLoading] = useState<boolean>(true)
     const [errorMessage, setErrorMessage] = useState<boolean>(false)
@@ -31,6 +31,7 @@ const Image = ({ source, headers = {}, style = {}, resizeMode = FastImage.resize
         <>
             <FastImage
                 style={style}
+                tintColor={tintColor}
                 onError={onError}
                 onLoadEnd={onLoadEnd}
                 onLoadStart={onLoadStart}
@@ -58,4 +59,5 @@ interface ImageProps {
     headers?: { [key: string]: string };
     style: object,
     resizeMode?: keyof typeof FastImage.resizeMode;
+    tintColor?: string
 }

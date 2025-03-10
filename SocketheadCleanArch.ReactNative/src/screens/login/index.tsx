@@ -8,7 +8,7 @@ import { Text } from '@app/components';
 const Login = ({ navigation }: LoginScreenProps) => {
     return (
         <View>
-            <Text numberOfLines={0} style={{ fontFamily: fontFamily.thin }} onPress={() => navigation.navigate('Signup')}>Login</Text>
+            <Text style={{ fontFamily: fontFamily.thin }} onPress={() => navigation.navigate('Signup')}>Login</Text>
         </View>
     );
 }

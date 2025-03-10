@@ -14,7 +14,7 @@ const Button = ({ label = 'Default Label', onPress = () => { }, disabled = false
     }
     return (
         <TouchableOpacity disabled={disabled} onPress={() => onPress()} style={{ backgroundColor: disabled ? Colors.blueGrey : Colors.primaryColor, borderRadius: 12, paddingVertical: 20, ...containerStyles }}>
-            <Text numberOfLines={0} onPress={() => null} style={{ color: Colors.white, textAlign: 'center', fontSize: 14, ...textStyles }}>{label}</Text>
+            <Text onPress={() => null} style={{ color: Colors.white, textAlign: 'center', fontSize: 14, ...textStyles }}>{label}</Text>
         </TouchableOpacity>
     );
 }

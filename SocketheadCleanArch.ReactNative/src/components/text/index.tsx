@@ -30,8 +30,8 @@ export default Text;
 
 interface TextProps {
     children: any,
-    style: any,
-    numberOfLines: number,
-    onPress: Function,
+    style?: any,
+    numberOfLines?: number,
+    onPress?: Function,
 
 }

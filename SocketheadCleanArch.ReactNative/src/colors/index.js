@@ -7,4 +7,6 @@ export default Colors = {
     primaryColor: '#24282C',
     whiteLayer: "#ffffff4a",
     blueGrey: '#BBBCBE',
+    blueGrey3: "#9A9C9E",
+    primaryRed: '#D13D3F'
 }
