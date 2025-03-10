@@ -118,4 +118,4 @@ app.MapRazorPages()
 
 await app.SeedDataAsync();
 
-app.Run();
+await app.RunAsync();

@@ -5,8 +5,6 @@ using SocketheadCleanArch.API.Models;
 
 namespace SocketheadCleanArch.API.Controllers;
 
-#if DEBUG
-
 /// <summary>
 /// These endpoints are for the client to test and validate the API
 /// They are only available for "Debug" builds
@@ -67,5 +65,3 @@ public class TestController : ControllerBase
         return this.BadRequestResponse(detail: "This is a test bad request.");
     }
 }
-
-#endif
