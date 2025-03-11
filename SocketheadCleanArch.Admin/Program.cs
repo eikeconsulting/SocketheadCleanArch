@@ -8,8 +8,24 @@ using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
 using SocketheadCleanArch.Service;
 using SocketheadCleanArch.Service.Config;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SocketheadCleanArchDbContextConnection' not found.");;
+
+builder.Services.AddDbContext<SocketheadCleanArchDbContext>(options => options.UseSqlite(connectionString));
+
+builder.Services.AddDefaultIdentity<AppUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+})
+    .AddRoles<AppRole>()
+    .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
+    .AddDefaultTokenProviders();
 
 Log.Logger = new LoggerConfiguration()
     .ApplyDefaultLoggingConfig()
@@ -25,18 +41,6 @@ builder.Services
     .RegisterServices(builder.Configuration)
     .AddDatabaseDeveloperPageExceptionFilter()
     //.AddIdentity<AppUser, AppRole>(options =>
-    .AddDefaultIdentity<AppUser>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = true;
-        options.Password.RequiredLength = 8;
-        options.Password.RequireDigit = true;
-        options.Password.RequireNonAlphanumeric = true;
-        options.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
-    })
-    .AddRoles<AppRole>()
-    .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
-    .AddDefaultTokenProviders()
-    .Services
     // Setup MFA, this is not working, it never calls this
     // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/mfa?view=aspnetcore-9.0
     .AddScoped<IUserClaimsPrincipalFactory<AppUser>, AdditionalUserClaimsPrincipalFactory>()
@@ -91,6 +95,7 @@ else
 }
 
 app.UseExceptionHandler("/Home/Error");
+app.UseDeveloperExceptionPage();
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHttpsRedirection();
