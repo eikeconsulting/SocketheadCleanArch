@@ -22,7 +22,7 @@ public class ApiAppFactory : WebApplicationFactory<ApiProgram>
                 // TODO: remove this once using a real database
                 .AddDbContext<SocketheadCleanArchDbContext>(options =>
                 {
-                    options.UseSqlite("DataSource=../../../../app.db;Cache=Shared");
+                    options.UseNpgsql("Host=localhost;Port=5432;Database=little-things;Username=postgres;Password=root");
                 })
                 ;
         });

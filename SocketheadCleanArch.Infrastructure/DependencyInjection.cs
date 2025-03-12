@@ -16,7 +16,7 @@ public static class DependencyInjection
         return services
             .AddDbContext<SocketheadCleanArchDbContext>(options =>
             {
-                options.UseSqlite(connectionString); // Change this for your project!
+                options.UseNpgsql(connectionString); // Change this for your project!
                 options.EnableDetailedErrors();
             })
             .AddScoped<ISocketheadCleanArchDbContext, SocketheadCleanArchDbContext>()

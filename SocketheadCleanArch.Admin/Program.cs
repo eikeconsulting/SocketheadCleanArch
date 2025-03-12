@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'SocketheadCleanArchDbContextConnection' not found.");;
 
-builder.Services.AddDbContext<SocketheadCleanArchDbContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<SocketheadCleanArchDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddDefaultIdentity<AppUser>(options =>
 {
