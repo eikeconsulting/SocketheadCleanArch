@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { Feed, LittleSteps, Login, Menu, Signup, Task } from '@app/screens';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import colors from '@app/colors';
+import Colors from '@app/colors';
 import { Image, Text } from '@app/components';
 import { Assets } from '@app/assets';
 import { AddReflection } from '@app/screens/reflection';
@@ -47,7 +47,7 @@ const Tabs = ({ state, navigation }: any) => {
     return (
         <>
             <View style={{ paddingTop: 0 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: colors.white }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: Colors.white }}>
                     {state.routes.map((route: any, index: number) => {
                         const isFocused = state.index === index;
                         const onPress = () => {
@@ -62,14 +62,14 @@ const Tabs = ({ state, navigation }: any) => {
                         return (
                             <TouchableOpacity onPress={onPress} style={{ padding: 15 }}>
                                 {index === 0 ?
-                                    <Image source={Assets.trails} style={{ width: 30, height: 30 }} tintColor={isFocused ? colors.primaryRed : colors.black} />
+                                    <Image source={Assets.trails} style={{ width: 30, height: 30 }} tintColor={isFocused ? Colors.primaryRed : Colors.black} />
                                     : index == 1 ?
-                                        <Image source={Assets.bullseye} style={{ width: 30, height: 30 }} tintColor={isFocused ? colors.primaryRed : colors.black} />
+                                        <Image source={Assets.bullseye} style={{ width: 30, height: 30 }} tintColor={isFocused ? Colors.primaryRed : Colors.black} />
                                         : index == 2 ?
-                                            <Image source={Assets.plus} style={{ width: 30, height: 30 }} tintColor={isFocused ? colors.primaryRed : colors.black} />
+                                            <Image source={Assets.plus} style={{ width: 30, height: 30 }} tintColor={isFocused ? Colors.primaryRed : Colors.black} />
                                             : index == 3 ?
-                                                <Image source={Assets.stone} style={{ width: 30, height: 30 }} tintColor={isFocused ? colors.primaryRed : colors.black} />
-                                                : <Image source={Assets.more} style={{ width: 30, height: 30 }} tintColor={isFocused ? colors.primaryRed : colors.black} />
+                                                <Image source={Assets.stone} style={{ width: 30, height: 30 }} tintColor={isFocused ? Colors.primaryRed : Colors.black} />
+                                                : <Image source={Assets.more} style={{ width: 30, height: 30 }} tintColor={isFocused ? Colors.primaryRed : Colors.black} />
 
                                 }
                             </TouchableOpacity>
@@ -77,7 +77,7 @@ const Tabs = ({ state, navigation }: any) => {
                     })}
                 </View>
             </View>
-            <SafeAreaView style={{ backgroundColor: colors.white }} />
+            <SafeAreaView style={{ backgroundColor: Colors.white }} />
         </>
     );
 };
