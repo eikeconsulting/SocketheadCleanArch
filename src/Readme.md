@@ -112,7 +112,7 @@ dotnet ef migrations add DescriptiveNameHere --context SocketheadCleanArchDbCont
 ``` bash
 dotnet ef database update --context SocketheadCleanArchDbContext `
     --project ./SocketheadCleanArch.Infrastructure/SocketheadCleanArch.Infrastructure.csproj `
-    --startup-project ./SocketheadCleanArch.Api/SocketheadCleanArch.Api.csproj
+    --startup-project ./SocketheadCleanArch.Admin/SocketheadCleanArch.Admin.csproj
 ```
 
 #### Delete Migration
@@ -120,6 +120,6 @@ dotnet ef database update --context SocketheadCleanArchDbContext `
 ``` bash
 dotnet ef migrations remove --context SocketheadCleanArchDataContext `
     --project ./SocketheadCleanArch.Infrastructure/SocketheadCleanArch.Infrastructure.csproj `
-    --startup-project ./SocketheadCleanArch.Api/SocketheadCleanArch.Api.csproj
+    --startup-project ./SocketheadCleanArch.Admin/SocketheadCleanArch.Admin.csproj
 ```
 
