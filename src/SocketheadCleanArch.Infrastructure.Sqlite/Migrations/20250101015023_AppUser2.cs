@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SocketheadCleanArch.Admin.Data.Migrations
+namespace SocketheadCleanArch.Infrastructure.Sqlite.Migrations
 {
     /// <inheritdoc />
     public partial class AppUser2 : Migration

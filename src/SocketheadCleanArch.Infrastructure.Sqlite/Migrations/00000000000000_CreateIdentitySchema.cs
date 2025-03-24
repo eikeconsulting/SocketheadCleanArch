@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SocketheadCleanArch.Admin.Data.Migrations
+namespace SocketheadCleanArch.Infrastructure.Sqlite.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

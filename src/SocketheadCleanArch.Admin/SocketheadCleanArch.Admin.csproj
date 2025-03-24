@@ -29,6 +29,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SocketheadCleanArch.Infrastructure.Postgres\SocketheadCleanArch.Infrastructure.Postgres.csproj" />
+      <ProjectReference Include="..\SocketheadCleanArch.Infrastructure.Sqlite\SocketheadCleanArch.Infrastructure.Sqlite.csproj" />
       <ProjectReference Include="..\SocketheadCleanArch.Infrastructure\SocketheadCleanArch.Infrastructure.csproj" />
       <ProjectReference Include="..\SocketheadCleanArch.Service\SocketheadCleanArch.Service.csproj" />
     </ItemGroup>

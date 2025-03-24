@@ -8,7 +8,7 @@ using SocketheadCleanArch.Admin.Data;
 
 #nullable disable
 
-namespace SocketheadCleanArch.Admin.Data.Migrations
+namespace SocketheadCleanArch.Infrastructure.Sqlite.Migrations
 {
     [DbContext(typeof(SocketheadCleanArchDbContext))]
     [Migration("20250101014019_AppUser")]
