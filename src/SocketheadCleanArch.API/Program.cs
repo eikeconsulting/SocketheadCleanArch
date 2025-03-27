@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json.Converters;
 using Scalar.AspNetCore;
@@ -50,7 +51,7 @@ builder.Services
     
     // JWT Authentication
     .RegisterJwtTokenAuthentication(config)
-
+    
     // Deal with unhandled Exceptions and create a structured ProblemDetails response
     //.AddExceptionHandler<ApiExceptionHandler>()
 
@@ -72,7 +73,24 @@ builder.Services
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
     })
     .Services
-
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddGoogle(options => {
+        options.ClientId = config["Authentication:Google:ClientId"] ??"";
+        options.ClientSecret = config["Authentication:Google:ClientSecret"] ??"";
+    })
+    .AddFacebook(options => {
+        options.AppId = config["Authentication:Facebook:AppId"]??"";
+        options.AppSecret = config["Authentication:Facebook:AppSecret"]??"";
+    })
+    .AddTwitter(options => {
+        options.ClientId = config["Authentication:Twitter:ConsumerKey"]??"";
+        options.ClientSecret = config["Authentication:Twitter:ConsumerSecret"]??"";
+    })
+    .Services
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     .AddOpenApi(
         documentName: "v1",  

@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using SocketheadCleanArch.API.Models;
 using SocketheadCleanArch.Domain.Dtos;
 using SocketheadCleanArch.Domain.Entities;
@@ -36,6 +37,52 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
                 Roles: roles)
         };
     }
+    
+    public async Task<AuthResponse> AuthenticateExternalAsync(ExternalLoginInfo loginInfo)
+    {
+        var user = await userAdmin.FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
+
+        if (user == null)
+        {
+            var email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return new AuthResponse { FailureReason = "Email not available from external provider" };
+            }
+
+            user = new AppUser
+            {
+                Email = email,
+                FirstName = loginInfo.Principal.FindFirstValue(ClaimTypes.GivenName) ?? string.Empty,
+                LastName = loginInfo.Principal.FindFirstValue(ClaimTypes.Surname) ?? string.Empty,
+                UserName = email
+            };
+
+            var creationResult = await userAdmin.CreateUserAsync(user);
+            if (!creationResult.Succeeded)
+            {
+                return new AuthResponse { FailureReason = "User creation failed" };
+            }
+
+            var addLoginResult = await userAdmin.AddLoginAsync(user, loginInfo);
+            if (!addLoginResult.Succeeded)
+            {
+                return new AuthResponse { FailureReason = "Failed to link external login" };
+            }
+        }
+
+        var roles = await userAdmin.GetUserRolesAsync(user);
+        var claims = CreateUserClaims(user, roles);
+        var tokenResult = jwtTokenService.GenerateJwtAccessToken(claims);
+
+        return new AuthResponse
+        {
+            AccessToken = tokenResult.AccessToken,
+            AccessTokenExpiry = tokenResult.Expiration,
+            User = new UserDto(user.Id, user.Email!, user.FirstName, user.LastName, roles)
+        };
+    }
+
 
     private static List<Claim> CreateUserClaims(AppUser user, IReadOnlyList<string> roles)
     {

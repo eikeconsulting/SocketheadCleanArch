@@ -1,19 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SocketheadCleanArch.API.Authentication;
 using SocketheadCleanArch.API.Extensions;
 using SocketheadCleanArch.API.Models;
+using SocketheadCleanArch.Domain.Entities;
 
 namespace SocketheadCleanArch.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuthController(UserAuthService userAuthService) : ControllerBase
+public class AuthController(
+    SignInManager<AppUser> signInManager,
+    UserAuthService userAuthService,
+    ILogger<AuthController> logger)
+    : ControllerBase
 {
-    /// <summary>
-    /// Authenticate against email/password
-    /// Returns 200 on success along with a JWT Access Token and user details
-    /// Returns 401 if login failed (user not found or password did not match)
-    /// </summary>
+
     [HttpPost("login")]
     public async Task<ActionResult<ApiResponse<AuthResponse>>> Login(AuthRequest authRequest)
     {
@@ -24,5 +26,33 @@ public class AuthController(UserAuthService userAuthService) : ControllerBase
         return authResponse.IsSuccess 
             ? this.OkResponse(authResponse)
             : this.NotAuthorizedResponse(detail: authResponse.FailureReason ?? "Not Authorized");
+    }
+    
+    [HttpGet("external-login")]
+    public IActionResult ExternalLogin([FromQuery] string provider, [FromQuery] string returnUrl = "/")
+    {
+        var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl })!;
+        var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+        return Challenge(properties, provider);
+    }
+
+    /// <summary>
+    /// Callback handler for external providers. Generates JWT token for the logged-in user.
+    /// </summary>
+    [HttpGet("external-login-callback")]
+    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> ExternalLoginCallback([FromQuery] string returnUrl = "/")
+    {
+        var loginInfo = await signInManager.GetExternalLoginInfoAsync();
+        if (loginInfo is null)
+            return Redirect("/login?error=ExternalLoginFailed");
+
+        var response = await userAuthService.AuthenticateExternalAsync(loginInfo);
+        if (!string.IsNullOrEmpty(response.FailureReason))
+            return Unauthorized(response.FailureReason);
+
+        return Ok(response);
     }
 }

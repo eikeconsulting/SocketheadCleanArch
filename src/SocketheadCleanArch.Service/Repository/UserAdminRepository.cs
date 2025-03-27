@@ -29,6 +29,20 @@ public class UserAdminRepository(
     {
         return await roleManager.CreateAsync(new AppRole(roleName));
     }
+    public async Task<AppUser?> FindByLoginAsync(string loginProvider, string providerKey)
+    {
+        return await userManager.FindByLoginAsync(loginProvider, providerKey);
+    }
+
+    public async Task<IdentityResult> CreateUserAsync(AppUser user)
+    {
+        return await userManager.CreateAsync(user);
+    }
+
+    public async Task<IdentityResult> AddLoginAsync(AppUser user, ExternalLoginInfo loginInfo)
+    {
+        return await userManager.AddLoginAsync(user, loginInfo);
+    }
 
     public async Task<bool> AuthenticateUserAsync(AppUser user, string password)
     {
