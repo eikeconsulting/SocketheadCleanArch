@@ -4,9 +4,12 @@ using Scalar.AspNetCore;
 using Serilog;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SocketheadCleanArch.Admin.Data;
+using SocketheadCleanArch.Admin.Extensions;
 using SocketheadCleanArch.API.Authentication;
 using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
+using SocketheadCleanArch.Infrastructure.Postgres;
+using SocketheadCleanArch.Infrastructure.Sqlite;
 using SocketheadCleanArch.Service;
 using SocketheadCleanArch.Service.Config;
 
@@ -19,6 +22,7 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 builder.BuildAppConfig(Log.Logger);
 
+IConfiguration config = builder.Configuration;
 
 builder.Services
 
@@ -26,8 +30,13 @@ builder.Services
     .AddHealthChecks()
     .Services
 
-    .RegisterInfrastructure(builder.Configuration)
-    .RegisterServices(builder.Configuration)
+    // Register the database provider based on configuration
+    .If(config["DatabaseProvider"] == "Postgres",
+        ifAction: sp => sp.RegisterPostgres(config),
+        elseAction: sp => sp.RegisterSqlite(config))
+        
+    .RegisterInfrastructure(config)
+    .RegisterServices(config)
     .AddScoped<JwtTokenService>()
     .AddScoped<UserAuthService>()
 
@@ -40,7 +49,7 @@ builder.Services
     .Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromMinutes(15))
     
     // JWT Authentication
-    .RegisterJwtTokenAuthentication(builder.Configuration)
+    .RegisterJwtTokenAuthentication(config)
 
     // Deal with unhandled Exceptions and create a structured ProblemDetails response
     //.AddExceptionHandler<ApiExceptionHandler>()

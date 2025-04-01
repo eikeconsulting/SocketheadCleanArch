@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.API", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Tests", "SocketheadCleanArch.Tests\SocketheadCleanArch.Tests.csproj", "{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure.Sqlite", "SocketheadCleanArch.Infrastructure.Sqlite\SocketheadCleanArch.Infrastructure.Sqlite.csproj", "{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure.Postgres", "SocketheadCleanArch.Infrastructure.Postgres\SocketheadCleanArch.Infrastructure.Postgres.csproj", "{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,5 +56,13 @@ Global
 		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace SocketheadCleanArch.Admin.Data.Migrations
+namespace SocketheadCleanArch.Infrastructure.Sqlite.Migrations
 {
     [DbContext(typeof(SocketheadCleanArchDbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]

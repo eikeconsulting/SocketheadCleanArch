@@ -22,7 +22,7 @@ public class ApiAppFactory : WebApplicationFactory<ApiProgram>
                 // TODO: remove this once using a real database
                 .AddDbContext<SocketheadCleanArchDbContext>(options =>
                 {
-                    options.UseSqlite("DataSource=../../../../app.db;Cache=Shared");
+                    //roptions.UseSqlite("DataSource=../../../../app.db;Cache=Shared");
                 })
                 ;
         });

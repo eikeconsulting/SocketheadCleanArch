@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Serilog;
-using SocketheadCleanArch.Admin;
 using SocketheadCleanArch.Admin.Data;
+using SocketheadCleanArch.Admin.Extensions;
 using SocketheadCleanArch.Admin.MFA;
 using SocketheadCleanArch.Admin.Seeding;
 using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
+using SocketheadCleanArch.Infrastructure.Postgres;
+using SocketheadCleanArch.Infrastructure.Sqlite;
 using SocketheadCleanArch.Service;
 using SocketheadCleanArch.Service.Config;
 
@@ -18,13 +20,22 @@ Log.Logger = new LoggerConfiguration()
 builder.Host.UseSerilog();
 builder.BuildAppConfig(Log.Logger);
 
+IConfiguration config = builder.Configuration;
+
 builder.Services
     .AddHealthChecks()
     .Services
-    .RegisterInfrastructure(builder.Configuration)
-    .RegisterServices(builder.Configuration)
+    
+    // Register the database provider based on configuration
+    .If(config["DatabaseProvider"] == "Postgres",
+        ifAction: sp => sp.RegisterPostgres(config),
+        elseAction: sp => sp.RegisterSqlite(config))
+    
+    .RegisterInfrastructure(config)
+    .RegisterServices(config)
+
     .AddDatabaseDeveloperPageExceptionFilter()
-    //.AddIdentity<AppUser, AppRole>(options =>
+
     .AddDefaultIdentity<AppUser>(options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
@@ -37,6 +48,7 @@ builder.Services
     .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
     .AddDefaultTokenProviders()
     .Services
+    
     // Setup MFA, this is not working, it never calls this
     // https://learn.microsoft.com/en-us/aspnet/core/security/authentication/mfa?view=aspnetcore-9.0
     .AddScoped<IUserClaimsPrincipalFactory<AppUser>, AdditionalUserClaimsPrincipalFactory>()
@@ -61,7 +73,7 @@ builder.Services
             policy.RequireClaim("amr", "mfa"); // Require the "mfa" claim
         });
     })
-    .Configure<DataSeedSettings>(builder.Configuration.GetSection("DataSeedSettings"))
+    .Configure<DataSeedSettings>(config.GetSection("DataSeedSettings"))
     .AddScoped<DataSeeder>()
     .AddRazorPages()
     ;
@@ -83,14 +95,15 @@ app.UseSerilogRequestLogging(options =>
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    app.UseDeveloperExceptionPage();
 }
 else
 {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+    app.UseExceptionHandler("/Home/Error");
 }
 
-app.UseExceptionHandler("/Home/Error");
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHttpsRedirection();
