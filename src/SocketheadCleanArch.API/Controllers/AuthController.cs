@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocketheadCleanArch.API.Authentication;
 using SocketheadCleanArch.API.Extensions;
@@ -31,8 +32,8 @@ public class AuthController(
     [HttpGet("external-login")]
     public IActionResult ExternalLogin([FromQuery] string provider, [FromQuery] string returnUrl = "/")
     {
-        var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl })!;
-        var properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        string? redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Auth", new { returnUrl })!;
+        AuthenticationProperties? properties = signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
         return Challenge(properties, provider);
     }
@@ -45,11 +46,11 @@ public class AuthController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ExternalLoginCallback([FromQuery] string returnUrl = "/")
     {
-        var loginInfo = await signInManager.GetExternalLoginInfoAsync();
+        ExternalLoginInfo? loginInfo = await signInManager.GetExternalLoginInfoAsync();
         if (loginInfo is null)
             return Redirect("/login?error=ExternalLoginFailed");
 
-        var response = await userAuthService.AuthenticateExternalAsync(loginInfo);
+        AuthResponse? response = await userAuthService.AuthenticateExternalAsync(loginInfo);
         if (!string.IsNullOrEmpty(response.FailureReason))
             return Unauthorized(response.FailureReason);
 
