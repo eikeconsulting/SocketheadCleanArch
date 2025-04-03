@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Newtonsoft.Json.Converters;
 using Scalar.AspNetCore;
 using Serilog;
@@ -82,15 +83,9 @@ builder.Services
         options.ClientId = config["Authentication:Google:ClientId"] ??"";
         options.ClientSecret = config["Authentication:Google:ClientSecret"] ??"";
     })
-    .AddFacebook(options => {
-        options.AppId = config["Authentication:Facebook:AppId"]??"";
-        options.AppSecret = config["Authentication:Facebook:AppSecret"]??"";
-    })
-    .AddTwitter(options => {
-        options.ClientId = config["Authentication:Twitter:ConsumerKey"]??"";
-        options.ClientSecret = config["Authentication:Twitter:ConsumerSecret"]??"";
-    })
     .Services
+    .AddHttpContextAccessor()
+    .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     .AddOpenApi(
         documentName: "v1",  

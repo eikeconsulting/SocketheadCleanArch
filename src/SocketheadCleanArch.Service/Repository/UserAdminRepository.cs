@@ -39,7 +39,7 @@ public class UserAdminRepository(
         return await userManager.CreateAsync(user);
     }
 
-    public async Task<IdentityResult> AddLoginAsync(AppUser user, ExternalLoginInfo loginInfo)
+    public async Task<IdentityResult> AddLoginAsync(AppUser user, UserLoginInfo loginInfo)
     {
         return await userManager.AddLoginAsync(user, loginInfo);
     }
