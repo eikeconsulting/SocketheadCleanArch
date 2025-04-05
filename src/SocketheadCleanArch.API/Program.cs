@@ -82,14 +82,6 @@ builder.Services
         options.ClientId = config["Authentication:Google:ClientId"] ??"";
         options.ClientSecret = config["Authentication:Google:ClientSecret"] ??"";
     })
-    .AddFacebook(options => {
-        options.AppId = config["Authentication:Facebook:AppId"]??"";
-        options.AppSecret = config["Authentication:Facebook:AppSecret"]??"";
-    })
-    .AddTwitter(options => {
-        options.ClientId = config["Authentication:Twitter:ConsumerKey"]??"";
-        options.ClientSecret = config["Authentication:Twitter:ConsumerSecret"]??"";
-    })
     .Services
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     .AddOpenApi(
