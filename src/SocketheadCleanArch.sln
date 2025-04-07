@@ -5,11 +5,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FBA09CD-66B3-4561-BECF-15808114B772}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
-		Readme.md = Readme.md
-		.gitignore = .gitignore
 		app.db = app.db
 		appsettings.json = appsettings.json
 		appsettings.Development.json = appsettings.Development.json
+		..\Readme.md = ..\Readme.md
+		..\Sockethead.CleanArch.Template.nuspec = ..\Sockethead.CleanArch.Template.nuspec
+		..\.template.config\template.json = ..\.template.config\template.json
+		..\.gitignore = ..\.gitignore
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure", "SocketheadCleanArch.Infrastructure\SocketheadCleanArch.Infrastructure.csproj", "{D0C567EF-8D52-4542-A2E1-DED553EAB0F3}"
