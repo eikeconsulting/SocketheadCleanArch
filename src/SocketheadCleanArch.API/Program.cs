@@ -52,7 +52,6 @@ builder.Services
     
     // JWT Authentication
     .RegisterJwtTokenAuthentication(config)
-    
     // Deal with unhandled Exceptions and create a structured ProblemDetails response
     //.AddExceptionHandler<ApiExceptionHandler>()
 
