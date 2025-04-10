@@ -36,6 +36,13 @@ or
 podman compose up -d
 ```
 
+| Service | URL |
+|---------|-----|
+| Admin   | [http://localhost:5001](http://localhost:5001) |
+| API     | [http://localhost:5002](http://localhost:5002) – Test by accessing [http://localhost:5002/test/ping](http://localhost:5002/test/ping) |
+
+Https is not supported in the Docker container.
+
 The `.docker.env` file is used to set environment variables for the containers.
 
 Note that the parameters in the database's health check are intentionally hard-coded. To pass parameters to the compose.yaml file,
