@@ -1,5 +1,5 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text.Json;
 using Microsoft.IdentityModel.Tokens;
 using SocketheadCleanArch.Domain.Entities;
@@ -8,37 +8,6 @@ namespace SocketheadCleanArch.API.Utils;
 
 public static class AuthHelper
 {
-    public static async Task<bool> ValidateAppleTokenSignatureAsync(string idToken)
-    {
-        using HttpClient httpClient = new();
-        HttpResponseMessage response = await httpClient.GetAsync("https://appleid.apple.com/auth/keys");
-        string content = await response.Content.ReadAsStringAsync();
-
-        JsonDocument appleKeys = JsonDocument.Parse(content);
-        JsonElement keys = appleKeys.RootElement.GetProperty("keys");
-
-        TokenValidationParameters validationParameters = new()
-        {
-            ValidateIssuer = true,
-            ValidIssuer = "https://appleid.apple.com",
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKeys = keys.EnumerateArray().Select(AppleKeyHelper.CreateSecurityKey)
-        };
-
-        JwtSecurityTokenHandler tokenHandler = new();
-        try
-        {
-            tokenHandler.ValidateToken(idToken, validationParameters, out _);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-    
     public static List<Claim> CreateUserClaims(AppUser user, IReadOnlyList<string> roles)
     {
         if (user.Email is null)
@@ -49,10 +18,29 @@ public static class AuthHelper
             new(ClaimTypes.NameIdentifier, user.Id),
             new(ClaimTypes.Email, user.Email),
         ];
- 
+
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
-        return claims;        
+        return claims;
     }
-    
+
+    public static SecurityKey CreateSecurityKey(JsonElement key)
+    {
+        string n = key.GetProperty("n").GetString()!;
+        string e = key.GetProperty("e").GetString()!;
+
+        RSAParameters rsaParameters = new RSAParameters
+        {
+            Modulus = Base64UrlEncoder.DecodeBytes(n),
+            Exponent = Base64UrlEncoder.DecodeBytes(e)
+        };
+
+        RSA rsa = RSA.Create();
+        rsa.ImportParameters(rsaParameters);
+
+        return new RsaSecurityKey(rsa)
+        {
+            KeyId = key.GetProperty("kid").GetString()
+        };
+    }
 }

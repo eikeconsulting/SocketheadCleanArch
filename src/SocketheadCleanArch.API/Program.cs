@@ -8,6 +8,7 @@ using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SocketheadCleanArch.Admin.Data;
 using SocketheadCleanArch.Admin.Extensions;
 using SocketheadCleanArch.API.Authentication;
+using SocketheadCleanArch.API.Utils;
 using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
 using SocketheadCleanArch.Infrastructure.Postgres;
@@ -41,6 +42,7 @@ builder.Services
     .RegisterServices(config)
     .AddScoped<JwtTokenService>()
     .AddScoped<UserAuthService>()
+    .AddScoped<AppleAuthService>()
 
     .AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
@@ -84,6 +86,7 @@ builder.Services
     })
     .Services
     .AddHttpContextAccessor()
+    .AddHttpClient()
     .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     .AddOpenApi(

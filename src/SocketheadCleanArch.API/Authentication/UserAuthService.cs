@@ -13,14 +13,28 @@ using SocketheadCleanArch.API.Utils;
 
 namespace SocketheadCleanArch.API.Authentication;
 
-public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtTokenService, IConfiguration config,IUrlHelperFactory urlHelperFactory,IActionContextAccessor actionContextAccessor)
+/// <summary>
+/// Handles user authentication logic including standard and external login providers.
+/// </summary>
+public class UserAuthService(
+    UserAdminRepository userAdmin,
+    JwtTokenService jwtTokenService,
+    AppleAuthService appleAuthService,
+    IConfiguration config,
+    IUrlHelperFactory urlHelperFactory,
+    IActionContextAccessor actionContextAccessor,
+    ILogger<UserAuthService> logger
+)
 {
+    /// <summary>
+    /// Authenticates a user based on email and password credentials.
+    /// </summary>
     public async Task<AuthResponse> AuthenticateUserAsync(string email, string password)
     {
         AppUser? user = await userAdmin.FindUserByEmailAsync(email);
         if (user == null)
             return new AuthResponse { FailureReason = "User does not exist or invalid credentials" };
-        
+
         bool success = await userAdmin.AuthenticateUserAsync(user, password);
         if (!success)
             return new AuthResponse { FailureReason = "User does not exist or invalid credentials" };
@@ -28,22 +42,25 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
         IReadOnlyList<string> roles = await userAdmin.GetUserRolesAsync(user);
 
         IReadOnlyList<Claim> claims = AuthHelper.CreateUserClaims(user, roles);
-        
+
         AccessTokenResult result = jwtTokenService.GenerateJwtAccessToken(claims);
-        
+
         return new AuthResponse
         {
             AccessToken = result.AccessToken,
             AccessTokenExpiry = result.Expiration,
             User = new UserDto(
-                UserId: user.Id, 
-                Email: user.Email!, 
-                FirstName: user.FirstName, 
+                UserId: user.Id,
+                Email: user.Email!,
+                FirstName: user.FirstName,
                 LastName: user.LastName,
                 Roles: roles)
         };
     }
-    
+
+    /// <summary>
+    /// Authenticates a user through google account
+    /// </summary>
     public async Task<AuthResponse> AuthenticateGoogleAsync(ExternalLoginInfo loginInfo)
     {
         AppUser? user = await userAdmin.FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
@@ -59,20 +76,26 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
             user = new AppUser
             {
                 Email = email,
-                FirstName = loginInfo.Principal.FindFirstValue(ClaimTypes.GivenName) ?? string.Empty,
-                LastName = loginInfo.Principal.FindFirstValue(ClaimTypes.Surname) ?? string.Empty,
+                FirstName = loginInfo.Principal.FindFirstValue(ClaimTypes.GivenName),
+                LastName = loginInfo.Principal.FindFirstValue(ClaimTypes.Surname),
                 UserName = email
             };
 
             IdentityResult? creationResult = await userAdmin.CreateUserAsync(user);
             if (!creationResult.Succeeded)
             {
+                logger.LogError("Failed to create user during Google authentication. Errors: {Errors}",
+                    string.Join(", ", creationResult.Errors.Select(e => e.Description)));
+
                 return new AuthResponse { FailureReason = "User creation failed" };
             }
 
             IdentityResult? addLoginResult = await userAdmin.AddLoginAsync(user, loginInfo);
             if (!addLoginResult.Succeeded)
             {
+                logger.LogError("Failed to link external login for user {Email}. Errors: {Errors}",
+                    email, string.Join(", ", addLoginResult.Errors.Select(e => e.Description)));
+
                 return new AuthResponse { FailureReason = "Failed to link external login" };
             }
         }
@@ -88,7 +111,10 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
             User = new UserDto(user.Id, user.Email!, user.FirstName, user.LastName, roles)
         };
     }
-    
+
+    /// <summary>
+    /// Authenticates a user through apple account
+    /// </summary>
     public async Task<AuthResponse> AuthenticateAppleAsync(string idToken)
     {
         JwtSecurityTokenHandler tokenHandler = new();
@@ -103,7 +129,7 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
         }
 
         // Optionally: Validate token signature and issuer using Apple's public keys
-        bool isValid = await AuthHelper.ValidateAppleTokenSignatureAsync(idToken);
+        bool isValid = await appleAuthService.ValidateTokenAsync(idToken);
         if (!isValid)
         {
             return new AuthResponse { FailureReason = "Apple token signature validation failed." };
@@ -141,53 +167,71 @@ public class UserAuthService(UserAdminRepository userAdmin, JwtTokenService jwtT
             User = new UserDto(user.Id, user.Email!, user.FirstName, user.LastName, roles)
         };
     }
-    
+
     public string? GetExternalLoginRedirectUrl(string provider, string returnUrl, HttpRequest request)
     {
-        if (string.IsNullOrWhiteSpace(provider))
+        try
+        {
+            if (string.IsNullOrWhiteSpace(provider))
+            {
+                logger.LogWarning("External login failed: Provider is missing.");
+                return null;
+            }
+
+            if (provider.Equals("apple", StringComparison.OrdinalIgnoreCase))
+            {
+                string? baseUrl = config["Authentication:Apple:AuthorizationEndpoint"];
+                string? clientId = config["Authentication:Apple:ClientId"];
+                string? scope = config["Authentication:Apple:Scope"];
+                string? responseType = config["Authentication:Apple:ResponseType"];
+                string? responseMode = config["Authentication:Apple:ResponseMode"];
+
+                if (string.IsNullOrEmpty(baseUrl) || string.IsNullOrEmpty(clientId) ||
+                    string.IsNullOrEmpty(scope) || string.IsNullOrEmpty(responseType) ||
+                    string.IsNullOrEmpty(responseMode))
+                {
+                    logger.LogError("Apple login configuration is missing required fields.");
+                    return null;
+                }
+
+                string state = Guid.NewGuid().ToString("N");
+                string redirectUri =
+                    $"{request.Scheme}://{request.Host}/auth/external-login-callback/apple?provider=apple&returnUrl={Uri.EscapeDataString(returnUrl)}";
+
+                return $"{baseUrl}?" +
+                       $"client_id={Uri.EscapeDataString(clientId)}" +
+                       $"&redirect_uri={Uri.EscapeDataString(redirectUri)}" +
+                       $"&response_type={Uri.EscapeDataString(responseType)}" +
+                       $"&scope={Uri.EscapeDataString(scope)}" +
+                       $"&response_mode={Uri.EscapeDataString(responseMode)}" +
+                       $"&state={Uri.EscapeDataString(state)}";
+            }
+
+            if (provider.Equals("google", StringComparison.OrdinalIgnoreCase))
+            {
+                IUrlHelper? urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext!);
+                string? url = urlHelper.Action(
+                    action: "ExternalLoginCallbackGoogle",
+                    controller: "Auth",
+                    values: new { returnUrl, provider });
+
+                if (string.IsNullOrEmpty(url))
+                {
+                    logger.LogError("Failed to generate Google login callback URL.");
+                    return null;
+                }
+
+                return url;
+            }
+
+            logger.LogWarning("Unsupported external login provider: {Provider}", provider);
             return null;
-        
-        string url = string.Empty;
-        
-        // Apple-specific handling
-        if (provider.Equals("apple", StringComparison.OrdinalIgnoreCase))
-        {
-            string baseUrl = config["Authentication:Apple:AuthorizationEndpoint"] ?? "https://appleid.apple.com/auth/authorize";
-            string clientId = config["Authentication:Apple:ClientId"] ?? throw new ArgumentException("Apple ClientId is missing in configuration.");
-            string scope = config["Authentication:Apple:Scope"] ?? "name email";
-            string responseType = config["Authentication:Apple:ResponseType"] ?? "code id_token";
-            string responseMode = config["Authentication:Apple:ResponseMode"] ?? "form_post";
-            string state = Guid.NewGuid().ToString("N");
-
-            url = $"{request.Scheme}://{request.Host}/auth/external-login-callback/apple?provider=apple&returnUrl={Uri.EscapeDataString(returnUrl)}";
-
-            return $"{baseUrl}?" +
-                   $"client_id={Uri.EscapeDataString(clientId)}" +
-                   $"&redirect_uri={Uri.EscapeDataString(url)}" +
-                   $"&response_type={Uri.EscapeDataString(responseType)}" +
-                   $"&scope={Uri.EscapeDataString(scope)}" +
-                   $"&response_mode={Uri.EscapeDataString(responseMode)}" +
-                   $"&state={Uri.EscapeDataString(state)}";
-            
         }
-        else if (provider.Equals("google", StringComparison.OrdinalIgnoreCase))
+        catch (Exception ex)
         {
-            // For Google and other standard external providers
-            IUrlHelper? urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext!);
-            url = urlHelper.Action(
-                action: "ExternalLoginCallbackGoogle",
-                controller: "Auth",
-                values: new { returnUrl, provider }
-            ) ?? "";
-           
+            logger.LogError(ex,
+                "Exception occurred while building external login redirect URL for provider: {Provider}", provider);
+            return null;
         }
-    
-        return url;
     }
-
-    
-   
-
-
-    
 }
