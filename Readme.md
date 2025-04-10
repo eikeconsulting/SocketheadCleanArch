@@ -1,7 +1,7 @@
-![Sockethead logo](sockethead-logo.png)
+![Sockethead logo](https://raw.githubusercontent.com/eikeconsulting/SocketheadCleanArch/main/sockethead-logo.png)
 
 # ASP.NET MVC Clean Architecture Template
-This project template provides the foundation for an ASP.NET MVC Core project, starting with a
+This project template provides the foundation for an ASP.NET MVC Core project, starting with an
 MVC Administrative Site and API.
 
 ## Key Features
@@ -21,8 +21,18 @@ MVC Administrative Site and API.
 
 More popular common features will be added over time.
 
-## Getting Started
+## Installation
+Install the template from the command line:
+```bash
+dotnet new install Sockethead.CleanArch.Template
+```
 
+Then create a new project:
+```bash
+dotnet new sockethead-cleanarch MyTest1
+```
+
+## Getting Started
 1. Setup your database
 2. Configure an email provider
 3. Configure Admin users seeding 
@@ -36,9 +46,9 @@ or
 podman compose up -d
 ```
 
-| Service | URL |
-|---------|-----|
-| Admin   | [http://localhost:5001](http://localhost:5001) |
+| Service | URL                                                                                                                                   |
+|---------|---------------------------------------------------------------------------------------------------------------------------------------|
+| Admin   | [http://localhost:5001](http://localhost:5001)                                                                                        |
 | API     | [http://localhost:5002](http://localhost:5002) – Test by accessing [http://localhost:5002/test/ping](http://localhost:5002/test/ping) |
 
 Https is not supported in the Docker container.
@@ -93,7 +103,7 @@ Serilog is the most popular logging framework for .NET.
 It is configured in the Admin and API Program.cs files. 
 
 ### TUnit
-TUnit is brand new and is particularly well suited to Integration Testing with its support for 
+TUnit is brand new and i[dotnet.yml](.github/workflows/dotnet.yml)s particularly well suited to Integration Testing with its support for 
 the "DependsOn" tag which allows you to control the dependency sequence. It is now easy to
 have tests that build on state from previous tests, while still supporting parallel execution.
 We really like this library. There are some issues and currently, the tests are not "discovered"

@@ -2,7 +2,7 @@
 <package>
     <metadata>
         <id>Sockethead.CleanArch.Template</id>
-        <version>1.0.1</version>
+        <version>1.0.3</version>
         <authors>Randall Eike</authors>
         <description>A Clean Architecture template for API and Admin web projects.</description>
         <tags>template clean architecture aspnet-core</tags>
