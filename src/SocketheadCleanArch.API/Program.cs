@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Newtonsoft.Json.Converters;
 using Scalar.AspNetCore;
 using Serilog;
@@ -6,6 +8,7 @@ using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using SocketheadCleanArch.Admin.Data;
 using SocketheadCleanArch.Admin.Extensions;
 using SocketheadCleanArch.API.Authentication;
+using SocketheadCleanArch.API.Utils;
 using SocketheadCleanArch.Domain.Entities;
 using SocketheadCleanArch.Infrastructure;
 using SocketheadCleanArch.Infrastructure.Postgres;
@@ -39,6 +42,7 @@ builder.Services
     .RegisterServices(config)
     .AddScoped<JwtTokenService>()
     .AddScoped<UserAuthService>()
+    .AddScoped<AppleAuthService>()
 
     .AddIdentity<AppUser, AppRole>()
     .AddEntityFrameworkStores<SocketheadCleanArchDbContext>()
@@ -50,7 +54,6 @@ builder.Services
     
     // JWT Authentication
     .RegisterJwtTokenAuthentication(config)
-
     // Deal with unhandled Exceptions and create a structured ProblemDetails response
     //.AddExceptionHandler<ApiExceptionHandler>()
 
@@ -72,7 +75,19 @@ builder.Services
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
     })
     .Services
-
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddGoogle(options => {
+        options.ClientId = config["Authentication:Google:ClientId"] ??"";
+        options.ClientSecret = config["Authentication:Google:ClientSecret"] ??"";
+    })
+    .Services
+    .AddHttpContextAccessor()
+    .AddHttpClient()
+    .AddSingleton<IActionContextAccessor, ActionContextAccessor>()
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     .AddOpenApi(
         documentName: "v1",  
