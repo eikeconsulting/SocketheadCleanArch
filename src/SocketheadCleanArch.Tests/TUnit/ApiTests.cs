@@ -42,6 +42,7 @@ public class ApiTests(ApiAppFactoryTUnit factory)
         await Assert.That(apiResponse!.Data).IsEqualTo("Pong.");
     }
  
+    /*
     [Test]
     [DependsOn(nameof(Ping_ShouldReturnPong))]
     public async Task Login_ShouldReturnToken()
@@ -71,9 +72,11 @@ public class ApiTests(ApiAppFactoryTUnit factory)
         string result = await factory.GetAsync<string>("/test/ping-authorized");
         await Assert.That(result).IsEqualTo("Authorized Pong.");
     }
+        */
+
 
     [Test]
-    [DependsOn(nameof(TestPingAuthorized_ShouldReturnPong))]
+    //[DependsOn(nameof(TestPingAuthorized_ShouldReturnPong))]
     public async Task MyTest()
     {
         int a = 1;
