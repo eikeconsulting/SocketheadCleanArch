@@ -55,6 +55,7 @@ public class UserAdminRepository(
             Id = Guid.NewGuid().ToString(), // RJE: I believe we should not be doing this
             UserName = email,
             Email = email,
+            EmailConfirmed = true,
         };
         
         return await userManager.CreateAsync(user, password);
