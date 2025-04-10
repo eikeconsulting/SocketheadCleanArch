@@ -11,6 +11,7 @@
     </metadata>
     <files>
         <file src="readme.md" target=".\" />
+        <file src="sockethead-logo.png" target=".\" />
         <file src="**" target="content" exclude="*\bin\**\*;*\obj\**\*;.git\**\*;.github\**\*;.idea\**\*" />
     </files>    
 </package>
