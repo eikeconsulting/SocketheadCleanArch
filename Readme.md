@@ -27,6 +27,28 @@ More popular common features will be added over time.
 2. Configure an email provider
 3. Configure Admin users seeding 
 
+### Running the Project (Docker Compose)
+```bash
+docker compose up -d
+```
+or
+```bash
+podman compose up -d
+```
+
+| Service | URL |
+|---------|-----|
+| Admin   | [http://localhost:5001](http://localhost:5001) |
+| API     | [http://localhost:5002](http://localhost:5002) – Test by accessing [http://localhost:5002/test/ping](http://localhost:5002/test/ping) |
+
+Https is not supported in the Docker container.
+
+The `.docker.env` file is used to set environment variables for the containers.
+
+Note that the parameters in the database's health check are intentionally hard-coded. To pass parameters to the compose.yaml file,
+you need to use a `.env` file instead of `env_file`. The `env_file` directive is used to pass environment variables to the container itself,
+not to the Compose file. Therefore, if you change the parameters in the Compose file, you must also update them in the database's health check.
+
 ## Project Structure
 ```mermaid
 graph TD;
