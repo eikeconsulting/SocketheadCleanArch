@@ -7,13 +7,12 @@ namespace SocketheadCleanArch.Admin.Seeding;
 
 public static class DataSeederExtensions
 {
-    public static async Task<WebApplication> SeedDataAsync(this WebApplication app)
+    public static async Task SeedDataAsync(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
         await seeder.SeedRolesAsync();
         await seeder.SeedUsersAsync();
-        return app;
     }
 }
 

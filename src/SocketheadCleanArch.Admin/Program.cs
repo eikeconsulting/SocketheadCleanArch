@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using SocketheadCleanArch.Admin.Data;
 using SocketheadCleanArch.Admin.Extensions;
@@ -107,6 +108,14 @@ else
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
 
 app.UseHttpsRedirection();
+
+// automatically run the migrations
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<SocketheadCleanArchDbContext>();
+    db.Database.Migrate();
+}
+
 app.UseRouting();
 
 app.MapHealthChecks("/_health");

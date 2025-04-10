@@ -2,13 +2,16 @@
 <package>
     <metadata>
         <id>Sockethead.CleanArch.Template</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <authors>Randall Eike</authors>
         <description>A Clean Architecture template for API and Admin web projects.</description>
         <tags>template clean architecture aspnet-core</tags>
         <projectUrl>https://github.com/eikeconsulting/SocketheadCleanArch</projectUrl>
+        <readme>Readme.md</readme>
     </metadata>
     <files>
-        <file src="**" target="content" exclude="*/bin/**;*/obj/**;.git/**;.github/**;.idea/**;*.nuspec" />
+        <file src="readme.md" target=".\" />
+        <file src="sockethead-logo.png" target=".\" />
+        <file src="**" target="content" exclude="*\bin\**\*;*\obj\**\*;.git\**\*;.github\**\*;.idea\**\*" />
     </files>    
 </package>

@@ -5,11 +5,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FBA09CD-66B3-4561-BECF-15808114B772}"
 	ProjectSection(SolutionItems) = preProject
 		compose.yaml = compose.yaml
-		Readme.md = Readme.md
-		.gitignore = .gitignore
-		app.db = app.db
 		appsettings.json = appsettings.json
 		appsettings.Development.json = appsettings.Development.json
+		..\Readme.md = ..\Readme.md
+		..\Sockethead.CleanArch.Template.nuspec = ..\Sockethead.CleanArch.Template.nuspec
+		..\.template.config\template.json = ..\.template.config\template.json
+		..\.gitignore = ..\.gitignore
+		app.db = app.db
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure", "SocketheadCleanArch.Infrastructure\SocketheadCleanArch.Infrastructure.csproj", "{D0C567EF-8D52-4542-A2E1-DED553EAB0F3}"
@@ -25,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure.Sqlite", "SocketheadCleanArch.Infrastructure.Sqlite\SocketheadCleanArch.Infrastructure.Sqlite.csproj", "{CA453E95-BF25-4F34-8308-FD4C66EC2DE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocketheadCleanArch.Infrastructure.Postgres", "SocketheadCleanArch.Infrastructure.Postgres\SocketheadCleanArch.Infrastructure.Postgres.csproj", "{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,5 +68,15 @@ Global
 		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B60C498-D7F2-4DA4-BD24-62E33545933A} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{69F3C2E9-30EB-47DC-AB95-69FC077D4D74} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{B276EE29-9085-43E5-89B8-C78F67F7E0FE} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{D0C567EF-8D52-4542-A2E1-DED553EAB0F3} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{1E70C96E-C3E9-408C-9082-9C501FDFC4A0} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{CA453E95-BF25-4F34-8308-FD4C66EC2DE9} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{B7001CA6-EF31-4DF6-8E56-AEBB9CB89FFA} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
+		{A1B1758F-46EE-4F74-B4FA-13AF0DE4D1F7} = {F8BCFCC8-FB06-4937-8F92-7DE765C65EF2}
 	EndGlobalSection
 EndGlobal
