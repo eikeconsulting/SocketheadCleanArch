@@ -1,4 +1,6 @@
-﻿services:
+﻿name: socketheadcleanarch
+
+services:
   admin:
     container_name: socketheadcleanarch.admin
     image: socketheadcleanarch.admin
@@ -11,11 +13,13 @@
       - .docker.env
     volumes:
       - dataprotection_keys:/home/app/.aspnet/DataProtection-Keys
+      - ./appsettings.json:/app/appsettings.json
+      - ./appsettings.Development.json:/app/appsettings.Development.json
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - sockethead-network
+      - socketheadcleanarch-network
 
   api:
     container_name: socketheadcleanarch.api
@@ -29,11 +33,13 @@
       - .docker.env
     volumes:
       - dataprotection_keys:/home/app/.aspnet/DataProtection-Keys
+      - ./appsettings.json:/app/appsettings.json
+      - ./appsettings.Development.json:/app/appsettings.Development.json
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - sockethead-network
+      - socketheadcleanarch-network
 
   db:
     container_name: socketheadcleanarch.db
@@ -50,15 +56,12 @@
       timeout: 5s
       retries: 5
     networks:
-      - sockethead-network
+      - socketheadcleanarch-network
 
 volumes:
   postgres_data:
-    name: sockethead_postgres_data
   dataprotection_keys:
-    name: sockethead_dataprotection_keys
 
 networks:
-  sockethead-network:
-    name: sockethead-network
+  socketheadcleanarch-network:
     driver: bridge
