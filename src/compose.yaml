@@ -12,7 +12,6 @@ services:
     env_file:
       - .docker.env
     volumes:
-      - dataprotection_keys:/home/app/.aspnet/DataProtection-Keys
       - ./appsettings.json:/app/appsettings.json
       - ./appsettings.Development.json:/app/appsettings.Development.json
     depends_on:
@@ -32,7 +31,6 @@ services:
     env_file:
       - .docker.env
     volumes:
-      - dataprotection_keys:/home/app/.aspnet/DataProtection-Keys
       - ./appsettings.json:/app/appsettings.json
       - ./appsettings.Development.json:/app/appsettings.Development.json
     depends_on:
@@ -60,7 +58,6 @@ services:
 
 volumes:
   postgres_data:
-  dataprotection_keys:
 
 networks:
   socketheadcleanarch-network:
