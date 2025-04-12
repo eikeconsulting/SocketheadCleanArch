@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SocketheadCleanArch.Admin.Data;
@@ -11,9 +12,11 @@ using SocketheadCleanArch.Admin.Data;
 namespace SocketheadCleanArch.Infrastructure.Postgres.Migrations
 {
     [DbContext(typeof(SocketheadCleanArchDbContext))]
-    partial class SocketheadCleanArchDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250411204459_DataProtection")]
+    partial class DataProtection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
